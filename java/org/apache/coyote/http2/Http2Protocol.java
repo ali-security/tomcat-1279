@@ -65,7 +65,10 @@ public class Http2Protocol implements UpgradeProtocol {
     // a single connection
     static final int DEFAULT_MAX_CONCURRENT_STREAM_EXECUTION = 20;
 
+    // Default factor used when adjusting overhead count for overhead frames
     static final int DEFAULT_OVERHEAD_COUNT_FACTOR = 1;
+    // Default factor used when adjusting overhead count for reset frames
+    static final int DEFAULT_OVERHEAD_RESET_FACTOR = 50;
     static final int DEFAULT_OVERHEAD_CONTINUATION_THRESHOLD = 1024;
     static final int DEFAULT_OVERHEAD_DATA_THRESHOLD = 1024;
     static final int DEFAULT_OVERHEAD_WINDOW_UPDATE_THRESHOLD = 1024;
@@ -96,6 +99,7 @@ public class Http2Protocol implements UpgradeProtocol {
     private int maxTrailerCount = Constants.DEFAULT_MAX_TRAILER_COUNT;
     private int maxTrailerSize = Constants.DEFAULT_MAX_TRAILER_SIZE;
     private int overheadCountFactor = DEFAULT_OVERHEAD_COUNT_FACTOR;
+    private int overheadResetFactor = DEFAULT_OVERHEAD_RESET_FACTOR;
     private int overheadContinuationThreshold = DEFAULT_OVERHEAD_CONTINUATION_THRESHOLD;
     private int overheadDataThreshold = DEFAULT_OVERHEAD_DATA_THRESHOLD;
     private int overheadWindowUpdateThreshold = DEFAULT_OVERHEAD_WINDOW_UPDATE_THRESHOLD;
@@ -342,6 +346,17 @@ public class Http2Protocol implements UpgradeProtocol {
         this.overheadCountFactor = overheadCountFactor;
     }
 
+    public int getOverheadResetFactor() {
+        return overheadResetFactor;
+    }
+
+    public void setOverheadResetFactor(int overheadResetFactor) {
+        if (overheadResetFactor < 0) {
+            this.overheadResetFactor = 0;
+        } else {
+            this.overheadResetFactor = overheadResetFactor;
+        }
+    }
 
     public int getOverheadContinuationThreshold() {
         return overheadContinuationThreshold;
